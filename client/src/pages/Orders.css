@@ -7,7 +7,7 @@
   padding:     80px 20px;
   color:       var(--warm-gray);
 }
-.orders-empty span { font-size: 4rem; display: block; margin-bottom: 16px; }
+.orders-empty span { display: block; margin-bottom: 16px; }
 .orders-empty h3   { font-size: 1.2rem; margin-bottom: 8px; color: var(--text); }
 .orders-empty p    { margin-bottom: 20px; }
 
@@ -37,7 +37,7 @@
   flex-wrap:   wrap;
 }
 .order-card__label { display: block; font-size: .75rem; color: var(--muted); margin-bottom: 2px; }
-.order-card__arrow { margin-left: auto; color: var(--muted); font-size: 1.2rem; }
+.order-card__arrow { margin-left: auto; color: var(--muted); display: flex; align-items: center; }
 
 /* Detail */
 .order-detail-page { padding-bottom: 80px; }

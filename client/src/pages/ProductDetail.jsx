@@ -4,16 +4,24 @@ import { useParams, Link }     from 'react-router-dom';
 import { productAPI }          from '../api/axios';
 import { useAuth }             from '../context/AuthContext';
 import { useCartStore }        from '../store/cartStore';
+import { ShoppingCart, Truck, RefreshCw, ShieldCheck, CheckCircle, XCircle, BadgeCheck } from 'lucide-react';
 import toast                   from 'react-hot-toast';
 import './ProductDetail.css';
 
 const Stars = ({ value, interactive, onChange }) => (
   <div className="stars-row">
     {[1,2,3,4,5].map(s => (
-      <span key={s}
-        className={`star ${s <= value ? 'star--filled' : ''} ${interactive ? 'star--interactive' : ''}`}
+      <svg
+        key={s}
+        width="18" height="18" viewBox="0 0 24 24"
+        fill={s <= value ? 'currentColor' : 'none'}
+        stroke="currentColor" strokeWidth="1.6"
+        className={`star-svg ${s <= value ? 'star-svg--filled' : ''} ${interactive ? 'star-svg--interactive' : ''}`}
         onClick={() => interactive && onChange(s)}
-      >★</span>
+        style={{ cursor: interactive ? 'pointer' : 'default' }}
+      >
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+      </svg>
     ))}
   </div>
 );
@@ -44,7 +52,7 @@ export default function ProductDetail() {
     setAdding(true);
     try {
       await addItem(product.id, qty);
-      toast.success(`${qty}× "${product.name}" added to cart 🐾`);
+      toast.success(`${qty}× "${product.name}" added to cart!`);
     } catch {
       toast.error('Failed to add to cart');
     } finally {
@@ -148,8 +156,8 @@ export default function ProductDetail() {
               <div>
                 <span>Availability</span>
                 {inStock
-                  ? <strong style={{color:'var(--sage)'}}>✓ In Stock ({product.stock} left)</strong>
-                  : <strong style={{color:'#c0392b'}}>✗ Out of Stock</strong>
+                  ? <strong style={{color:'var(--sage)',display:'flex',alignItems:'center',gap:5}}><CheckCircle size={15} strokeWidth={2.2} /> In Stock ({product.stock} left)</strong>
+                  : <strong style={{color:'#c0392b',display:'flex',alignItems:'center',gap:5}}><XCircle size={15} strokeWidth={2.2} /> Out of Stock</strong>
                 }
               </div>
             </div>
@@ -167,16 +175,17 @@ export default function ProductDetail() {
                   disabled={adding}
                   className="btn btn-primary btn-lg pd-info__cart-btn"
                 >
-                  {adding ? 'Adding…' : '🛒 Add to Cart'}
+                  <ShoppingCart size={18} strokeWidth={2} />
+                  {adding ? 'Adding…' : 'Add to Cart'}
                 </button>
               </div>
             )}
 
             {/* Guarantees */}
             <div className="pd-info__guarantees">
-              <div>🚚 Free shipping over $50</div>
-              <div>🔄 30-day returns</div>
-              <div>🔒 Secure checkout</div>
+              <div><Truck size={15} strokeWidth={2} /> Free shipping over $50</div>
+              <div><RefreshCw size={15} strokeWidth={2} /> 30-day returns</div>
+              <div><ShieldCheck size={15} strokeWidth={2} /> Secure checkout</div>
             </div>
           </div>
         </div>
@@ -207,7 +216,7 @@ export default function ProductDetail() {
                   </div>
                   {r.title && <h4 className="review-card__review-title">{r.title}</h4>}
                   {r.body  && <p className="review-card__body">{r.body}</p>}
-                  {r.is_verified && <span className="badge badge-green" style={{fontSize:'.72rem'}}>✓ Verified Purchase</span>}
+                  {r.is_verified && <span className="badge badge-green" style={{fontSize:'.72rem',display:'inline-flex',alignItems:'center',gap:4}}><BadgeCheck size={12} /> Verified Purchase</span>}
                 </div>
               )) : <p style={{color:'var(--muted)'}}>No reviews yet. Be the first!</p>}
             </div>

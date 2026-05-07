@@ -18,12 +18,15 @@
   padding:     140px 20px 80px;
   color:       var(--warm-gray);
 }
-.seller-pending span { font-size: 4rem; display: block; margin-bottom: 20px; }
+.seller-pending span { display: block; margin-bottom: 20px; }
 .seller-pending h2   { font-size: 1.6rem; margin-bottom: 10px; color: var(--text); }
 
 /* Tabs */
 .dash-tabs { display: flex; gap: 4px; margin-bottom: 32px; background: var(--cream-dark); padding: 4px; border-radius: var(--r-lg); width: fit-content; }
 .dash-tab {
+  display:       inline-flex;
+  align-items:   center;
+  gap:           6px;
   padding:       10px 20px;
   border-radius: calc(var(--r-lg) - 4px);
   font-size:     .9rem;
@@ -50,21 +53,35 @@
   border:        1px solid var(--border);
   border-radius: var(--r-lg);
 }
-.stat-card__icon  { font-size: 2rem; }
+.stat-card__icon {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  width:  48px; height: 48px;
+  border-radius:   var(--r-md);
+  background:      var(--cream-dark);
+  color:           var(--sage-dark);
+  flex-shrink:     0;
+}
 .stat-card__value { font-size: 1.6rem; font-weight: 700; color: var(--sage-dark); font-family: var(--font-display); }
 .stat-card__label { font-size: .82rem; color: var(--muted); }
 .stat-card__sub   { font-size: .75rem; color: var(--muted); font-style: italic; }
 
 /* Low stock alert */
 .low-stock-alert {
+  display:       flex;
+  align-items:   center;
+  flex-wrap:     wrap;
+  gap:           8px;
   background:    #FEF0E6;
   border:        1px solid var(--terracotta);
   border-radius: var(--r-md);
   padding:       14px 18px;
   margin-bottom: 24px;
   font-size:     .9rem;
+  color:         var(--terracotta);
 }
-.low-stock-items { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.low-stock-items { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; width: 100%; }
 
 /* Section */
 .dash-section h3 { font-family: var(--font-body); font-size: 1rem; font-weight: 700; margin-bottom: 16px; }
@@ -111,27 +128,31 @@
 
 /* Modal */
 .modal-overlay {
-  position:   fixed;
-  inset:      0;
-  background: rgba(0,0,0,.5);
+  position:        fixed;
+  inset:           0;
+  background:      rgba(0,0,0,.55);
   backdrop-filter: blur(4px);
-  z-index:    500;
-  display:    flex;
-  align-items:center;
-  justify-content:center;
-  padding:    20px;
+  z-index:         1100;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  padding:         20px;
+  overflow-y:      auto;
 }
 .modal {
-  background:    var(--white);
-  border-radius: var(--r-xl);
-  width:         100%;
-  max-width:     640px;
-  max-height:    90vh;
-  display:       flex;
-  flex-direction:column;
-  overflow:      hidden;
-  animation:     fadeUp .25s var(--ease);
+  background:     var(--white);
+  border-radius:  var(--r-xl);
+  width:          100%;
+  max-width:      640px;
+  max-height:     calc(100vh - 40px);
+  display:        flex;
+  flex-direction: column;
+  overflow:       hidden;
+  animation:      fadeUp .25s var(--ease);
+  box-shadow:     0 24px 64px rgba(0,0,0,.25);
+  flex-shrink:    0;
 }
+
 .modal__header {
   display:         flex;
   align-items:     center;

@@ -1,6 +1,12 @@
 /* Cart.css */
 .cart-page { padding-bottom: 80px; }
-.cart-page__title { font-size: 1.9rem; margin-bottom: 24px; }
+.cart-page__title {
+  font-size:   1.9rem;
+  margin-bottom: 24px;
+  display:     flex;
+  align-items: center;
+  gap:         10px;
+}
 
 /* Steps */
 .cart-steps {
@@ -112,7 +118,7 @@
   padding:     80px 20px;
   color:       var(--warm-gray);
 }
-.cart-empty span { font-size: 5rem; display: block; margin-bottom: 20px; }
+.cart-empty span { display: block; margin-bottom: 20px; }
 .cart-empty h2   { font-size: 1.6rem; margin-bottom: 10px; }
 .cart-empty p    { margin-bottom: 24px; }
 
@@ -146,6 +152,11 @@
   margin-top:      16px;
   font-size:       .78rem;
   color:           var(--muted);
+}
+.cart-summary__guarantees span {
+  display:     flex;
+  align-items: center;
+  gap:         5px;
 }
 
 /* Checkout form */

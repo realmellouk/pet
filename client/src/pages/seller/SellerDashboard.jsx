@@ -1,8 +1,13 @@
 /* pages/seller/SellerDashboard.jsx */
 import { useState, useEffect, useRef } from 'react';
+import { createPortal }               from 'react-dom';
 import { Link }                        from 'react-router-dom';
 import { productAPI, orderAPI }        from '../../api/axios';
 import { useAuth }                     from '../../context/AuthContext';
+import {
+  Package, ShoppingBag, Clock, DollarSign,
+  BarChart2, AlertTriangle, Plus, X, Star
+} from 'lucide-react';
 import toast                           from 'react-hot-toast';
 import './Seller.css';
 
@@ -55,12 +60,18 @@ function ProductModal({ product, onClose, onSaved, categories }) {
     }
   };
 
-  return (
+  // Lock body scroll while modal is open
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = ''; };
+  }, []);
+
+  return createPortal(
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={e => e.stopPropagation()}>
         <div className="modal__header">
           <h2>{product ? 'Edit Product' : 'Add New Product'}</h2>
-          <button onClick={onClose} className="modal__close">✕</button>
+          <button onClick={onClose} className="modal__close"><X size={18} strokeWidth={2.5} /></button>
         </div>
         <form onSubmit={handleSave} className="modal__body">
           <div className="modal-grid">
@@ -148,7 +159,8 @@ function ProductModal({ product, onClose, onSaved, categories }) {
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
@@ -198,7 +210,7 @@ export default function SellerDashboard() {
   if (!user?.is_approved) {
     return (
       <div className="seller-pending fade-up">
-        <span>⏳</span>
+        <Clock size={64} strokeWidth={1.2} style={{ opacity: .3, marginBottom: 16 }} />
         <h2>Account Pending Approval</h2>
         <p>Your seller account is being reviewed by our team. You'll be notified once approved.</p>
       </div>
@@ -212,7 +224,7 @@ export default function SellerDashboard() {
           <div>
             <h1>Seller Dashboard</h1>
             <p className="seller-header__sub">
-              Welcome back, <strong>{user.shop_name || user.name}</strong> 👋
+              Welcome back, <strong>{user.shop_name || user.name}</strong>
             </p>
           </div>
           <button className="btn btn-primary" onClick={() => { setEditProd(null); setShowModal(true); }}>
@@ -225,7 +237,11 @@ export default function SellerDashboard() {
           {['overview', 'products', 'orders'].map(t => (
             <button key={t} className={`dash-tab ${tab === t ? 'dash-tab--active' : ''}`}
               onClick={() => setTab(t)}>
-              {{ overview:'📊 Overview', products:'📦 Products', orders:'🛍️ Orders' }[t]}
+              {{
+                overview: <><BarChart2 size={15} strokeWidth={2} /> Overview</>,
+                products: <><Package    size={15} strokeWidth={2} /> Products</>,
+                orders:   <><ShoppingBag size={15} strokeWidth={2} /> Orders</>
+              }[t]}
             </button>
           ))}
         </div>
@@ -236,16 +252,17 @@ export default function SellerDashboard() {
             {tab === 'overview' && (
               <div className="seller-overview">
                 <div className="stat-cards">
-                  <StatCard icon="📦" label="Total Products" value={products.length} />
-                  <StatCard icon="🛍️" label="Total Orders" value={orders.length} />
-                  <StatCard icon="⏳" label="Pending Orders" value={pendingOrders} />
-                  <StatCard icon="💰" label="Revenue" value={`$${totalRevenue.toFixed(2)}`} sub="Delivered orders" />
+                  <StatCard icon={<Package    size={24} strokeWidth={1.7} />} label="Total Products" value={products.length} />
+                  <StatCard icon={<ShoppingBag size={24} strokeWidth={1.7} />} label="Total Orders"   value={orders.length} />
+                  <StatCard icon={<Clock       size={24} strokeWidth={1.7} />} label="Pending Orders" value={pendingOrders} />
+                  <StatCard icon={<DollarSign  size={24} strokeWidth={1.7} />} label="Revenue"        value={`$${totalRevenue.toFixed(2)}`} sub="Delivered orders" />
                 </div>
 
                 {/* Low stock warning */}
                 {products.filter(p => p.stock <= 5 && p.stock > 0).length > 0 && (
                   <div className="low-stock-alert">
-                    <strong>⚠️ Low Stock Alert</strong>
+                    <AlertTriangle size={16} strokeWidth={2} style={{flexShrink:0}} />
+                    <strong>Low Stock Alert</strong>
                     <div className="low-stock-items">
                       {products.filter(p => p.stock <= 5 && p.stock > 0).map(p => (
                         <span key={p.id} className="badge badge-orange">{p.name} ({p.stock} left)</span>
@@ -284,7 +301,7 @@ export default function SellerDashboard() {
               <div className="products-table-wrap">
                 {products.length === 0 ? (
                   <div className="products-empty" style={{padding:'60px 0'}}>
-                    <span>📦</span>
+                    <Package size={56} strokeWidth={1.2} style={{ opacity: .25, marginBottom: 12 }} />
                     <h3>No products yet</h3>
                     <p>Add your first product to start selling</p>
                     <button className="btn btn-primary" onClick={() => { setEditProd(null); setShowModal(true); }}>
@@ -308,7 +325,10 @@ export default function SellerDashboard() {
                           {p.stock}
                         </span>
                         <span>{p.sales_count}</span>
-                        <span>⭐ {parseFloat(p.rating).toFixed(1)}</span>
+                        <span style={{display:'inline-flex',alignItems:'center',gap:4}}>
+                          <Star size={12} fill="currentColor" strokeWidth={0} style={{color:'#f59e0b'}} />
+                          {parseFloat(p.rating).toFixed(1)}
+                        </span>
                         <span>
                           <span className={`badge ${p.is_active ? 'badge-green' : 'badge-gray'}`}>
                             {p.is_active ? 'Active' : 'Inactive'}

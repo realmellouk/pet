@@ -4,6 +4,10 @@ import { Link, useNavigate }    from 'react-router-dom';
 import { useCartStore }         from '../store/cartStore';
 import { orderAPI }             from '../api/axios';
 import { useAuth }              from '../context/AuthContext';
+import {
+  ShoppingCart, Package, ShieldCheck, RefreshCw,
+  Banknote, CreditCard, Wallet, CheckCircle, ArrowLeft
+} from 'lucide-react';
 import toast                    from 'react-hot-toast';
 import './Cart.css';
 
@@ -66,7 +70,7 @@ export default function Cart() {
   if (!items.length && step === 'cart') {
     return (
       <div className="cart-empty fade-up" style={{ paddingTop: 140 }}>
-        <span>🛒</span>
+        <ShoppingCart size={64} strokeWidth={1.3} style={{ opacity: .3, marginBottom: 12 }} />
         <h2>Your cart is empty</h2>
         <p>Looks like you haven't added anything yet.</p>
         <Link to="/products" className="btn btn-primary">Start Shopping</Link>
@@ -78,7 +82,9 @@ export default function Cart() {
     <div className="cart-page fade-up" style={{ paddingTop: 90 }}>
       <div className="container">
         <h1 className="cart-page__title">
-          {step === 'cart' ? '🛒 Shopping Cart' : '📦 Checkout'}
+          {step === 'cart'
+            ? <><ShoppingCart size={26} strokeWidth={1.8} /> Shopping Cart</>
+            : <><Package size={26} strokeWidth={1.8} /> Checkout</>}
         </h1>
 
         {/* Step indicator */}
@@ -169,15 +175,15 @@ export default function Cart() {
                 <h3 style={{marginTop:24}}>Payment Method</h3>
                 <div className="payment-methods">
                   {[
-                    { value: 'cod',    label: '💵 Cash on Delivery' },
-                    { value: 'stripe', label: '💳 Credit Card (Stripe)' },
-                    { value: 'paypal', label: '🅿️ PayPal' },
+                    { value: 'cod',    label: 'Cash on Delivery', icon: <Banknote size={18} strokeWidth={1.8} /> },
+                    { value: 'stripe', label: 'Credit Card (Stripe)', icon: <CreditCard size={18} strokeWidth={1.8} /> },
+                    { value: 'paypal', label: 'PayPal', icon: <Wallet size={18} strokeWidth={1.8} /> },
                   ].map(pm => (
                     <label key={pm.value} className={`payment-option ${shipping.payment_method === pm.value ? 'payment-option--active' : ''}`}>
                       <input type="radio" name="payment_method" value={pm.value}
                         checked={shipping.payment_method === pm.value}
                         onChange={e => setShipping(f => ({...f, payment_method: e.target.value}))} />
-                      {pm.label}
+                      {pm.icon} {pm.label}
                     </label>
                   ))}
                 </div>
@@ -232,7 +238,7 @@ export default function Cart() {
                 style={{marginTop:20}}
                 disabled={placing}
               >
-                {placing ? 'Placing Order…' : '✓ Place Order'}
+                {placing ? 'Placing Order…' : <><CheckCircle size={16} strokeWidth={2} /> Place Order</>}
               </button>
             )}
 
@@ -247,8 +253,8 @@ export default function Cart() {
             )}
 
             <div className="cart-summary__guarantees">
-              <span>🔒 Secure checkout</span>
-              <span>🔄 Easy returns</span>
+              <span><ShieldCheck size={14} strokeWidth={2} /> Secure checkout</span>
+              <span><RefreshCw size={14} strokeWidth={2} /> Easy returns</span>
             </div>
           </aside>
         </div>

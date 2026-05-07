@@ -14,6 +14,9 @@
 .admin-header__sub{ color: var(--muted); margin-top: 4px; }
 
 .admin-alert {
+  display:       flex;
+  align-items:   center;
+  gap:           8px;
   background:    #FEF0E6;
   border:        1px solid var(--terracotta);
   border-radius: var(--r-md);
@@ -39,7 +42,17 @@
   transition:    transform .18s, box-shadow .18s;
 }
 .admin-stat:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
-.admin-stat__icon  { font-size: 1.8rem; margin-bottom: 8px; }
+.admin-stat__icon {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  width:  48px; height: 48px;
+  border-radius:   50%;
+  background:      color-mix(in srgb, var(--accent-color, var(--sage)) 12%, transparent);
+  color:           var(--accent-color, var(--sage));
+  margin:          0 auto 10px;
+  flex-shrink:     0;
+}
 .admin-stat__val   { font-size: 1.7rem; font-weight: 700; color: var(--text); font-family: var(--font-display); }
 .admin-stat__label { font-size: .8rem; color: var(--muted); margin-top: 4px; }
 

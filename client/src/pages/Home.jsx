@@ -3,15 +3,19 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate }   from 'react-router-dom';
 import { productAPI }          from '../api/axios';
 import ProductCard             from '../components/common/ProductCard';
+import {
+  Truck, RefreshCw, ShieldCheck, MessageCircle,
+  Star, Sparkles, ShoppingBag, Leaf, Package
+} from 'lucide-react';
 import './Home.css';
 
 const PET_TYPES = [
-  { key: 'dog',    label: 'Dogs',    emoji: '🐕', color: '#FFF0E6' },
-  { key: 'cat',    label: 'Cats',    emoji: '🐈', color: '#F0F7FF' },
-  { key: 'bird',   label: 'Birds',   emoji: '🦜', color: '#EDFAF1' },
-  { key: 'fish',   label: 'Fish',    emoji: '🐠', color: '#EAF4FF' },
-  { key: 'rabbit', label: 'Rabbits', emoji: '🐇', color: '#FFF5F5' },
-  { key: 'reptile',label: 'Reptiles',emoji: '🦎', color: '#F5FFEA' },
+  { key: 'dog',    label: 'Dogs',     icon: '🐕', color: '#FFF0E6' },
+  { key: 'cat',    label: 'Cats',     icon: '🐈', color: '#F0F7FF' },
+  { key: 'bird',   label: 'Birds',    icon: '🦜', color: '#EDFAF1' },
+  { key: 'fish',   label: 'Fish',     icon: '🐠', color: '#EAF4FF' },
+  { key: 'rabbit', label: 'Rabbits',  icon: '🐇', color: '#FFF5F5' },
+  { key: 'reptile',label: 'Reptiles', icon: '🦎', color: '#F5FFEA' },
 ];
 
 export default function Home() {
@@ -42,7 +46,7 @@ export default function Home() {
         </div>
         <div className="container hero__inner">
           <div className="hero__content">
-            <span className="hero__eyebrow">🐾 The #1 Pet Supplies Store</span>
+            <span className="hero__eyebrow"><Star size={14} fill="currentColor" strokeWidth={0} style={{display:'inline',verticalAlign:'middle',marginRight:4}} /> The #1 Pet Supplies Store</span>
             <h1 className="hero__title">
               Everything Your<br />
               <em>Furry Friend</em> Needs
@@ -73,10 +77,10 @@ export default function Home() {
               <img src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=600&q=80"
                 alt="Happy pets" className="hero__img" />
               <div className="hero__badge hero__badge--top">
-                <span>🌿</span> 100% Natural Products
+                <Leaf size={15} strokeWidth={2} /> 100% Natural Products
               </div>
               <div className="hero__badge hero__badge--bottom">
-                <span>🚚</span> Free shipping over $50
+                <Truck size={15} strokeWidth={2} /> Free shipping over $50
               </div>
             </div>
           </div>
@@ -94,7 +98,7 @@ export default function Home() {
                 className="pet-type-card"
                 style={{ '--pt-color': pt.color }}
               >
-                <span className="pet-type-card__emoji">{pt.emoji}</span>
+                <span className="pet-type-card__emoji">{pt.icon}</span>
                 <span className="pet-type-card__label">{pt.label}</span>
               </Link>
             ))}
@@ -127,7 +131,7 @@ export default function Home() {
           <div className="container">
             <div className="section-header">
               <div>
-                <h2 className="section-title">⭐ Featured Products</h2>
+                <h2 className="section-title"><Star size={20} fill="currentColor" strokeWidth={0} style={{display:'inline',verticalAlign:'middle',color:'#f59e0b',marginRight:6}} /> Featured Products</h2>
                 <p className="section-subtitle">Handpicked favorites for your pets</p>
               </div>
               <Link to="/products?featured=1" className="btn btn-outline">View All</Link>
@@ -143,19 +147,19 @@ export default function Home() {
       <section className="promo-band">
         <div className="container promo-band__inner">
           <div className="promo-band__item">
-            <span>🚚</span>
+            <span><Truck size={24} strokeWidth={1.7} /></span>
             <div><strong>Free Shipping</strong><p>On orders over $50</p></div>
           </div>
           <div className="promo-band__item">
-            <span>🔄</span>
+            <span><RefreshCw size={24} strokeWidth={1.7} /></span>
             <div><strong>Easy Returns</strong><p>30-day return policy</p></div>
           </div>
           <div className="promo-band__item">
-            <span>🔒</span>
+            <span><ShieldCheck size={24} strokeWidth={1.7} /></span>
             <div><strong>Secure Payment</strong><p>100% secure checkout</p></div>
           </div>
           <div className="promo-band__item">
-            <span>💬</span>
+            <span><MessageCircle size={24} strokeWidth={1.7} /></span>
             <div><strong>24/7 Support</strong><p>Always here to help</p></div>
           </div>
         </div>
@@ -167,7 +171,7 @@ export default function Home() {
           <div className="container">
             <div className="section-header">
               <div>
-                <h2 className="section-title">✨ New Arrivals</h2>
+                <h2 className="section-title"><Sparkles size={20} strokeWidth={1.8} style={{display:'inline',verticalAlign:'middle',color:'#8b5cf6',marginRight:6}} /> New Arrivals</h2>
                 <p className="section-subtitle">Just landed in our store</p>
               </div>
               <Link to="/products" className="btn btn-outline">Browse All</Link>
@@ -190,7 +194,7 @@ export default function Home() {
               Start Selling Today →
             </Link>
           </div>
-          <div className="cta-section__emoji">🐾🛍️🐾</div>
+          <div className="cta-section__emoji"><ShoppingBag size={52} strokeWidth={1.3} style={{opacity:.25}} /></div>
         </div>
       </section>
     </main>

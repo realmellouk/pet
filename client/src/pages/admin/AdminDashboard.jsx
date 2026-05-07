@@ -1,6 +1,10 @@
 /* pages/admin/AdminDashboard.jsx */
 import { useState, useEffect } from 'react';
 import { adminAPI }            from '../../api/axios';
+import {
+  Users, Store, Clock, ShoppingBag, DollarSign,
+  Package, AlertTriangle, Calendar, BarChart2, Star
+} from 'lucide-react';
 import toast                   from 'react-hot-toast';
 import './Admin.css';
 
@@ -82,7 +86,8 @@ export default function AdminDashboard() {
           </div>
           {pendingSellers.length > 0 && (
             <div className="admin-alert">
-              ⚠️ <strong>{pendingSellers.length}</strong> seller{pendingSellers.length > 1 ? 's' : ''} awaiting approval
+              <AlertTriangle size={16} strokeWidth={2} style={{flexShrink:0}} />
+              <strong>{pendingSellers.length}</strong> seller{pendingSellers.length > 1 ? 's' : ''} awaiting approval
             </div>
           )}
         </div>
@@ -92,7 +97,12 @@ export default function AdminDashboard() {
           {['overview','users','orders','products'].map(t => (
             <button key={t} className={`dash-tab ${tab === t ? 'dash-tab--active' : ''}`}
               onClick={() => setTab(t)}>
-              {{ overview:'📊 Overview', users:'👥 Users', orders:'🛍️ Orders', products:'📦 Products' }[t]}
+              {{
+                overview: <><BarChart2   size={15} strokeWidth={2} /> Overview</>,
+                users:    <><Users       size={15} strokeWidth={2} /> Users</>,
+                orders:   <><ShoppingBag size={15} strokeWidth={2} /> Orders</>,
+                products: <><Package     size={15} strokeWidth={2} /> Products</>
+              }[t]}
             </button>
           ))}
         </div>
@@ -103,14 +113,14 @@ export default function AdminDashboard() {
             {tab === 'overview' && stats && (
               <div>
                 <div className="admin-stats-grid">
-                  <StatBox icon="👥" label="Total Users"     value={stats.userStats?.total_users}     color="var(--sage)" />
-                  <StatBox icon="🏪" label="Active Sellers"  value={stats.userStats?.sellers}         color="var(--terracotta)" />
-                  <StatBox icon="⏳" label="Pending Sellers" value={stats.userStats?.pending_sellers} color="#e67e22" />
-                  <StatBox icon="🛍️" label="Total Orders"    value={stats.orderStats?.total_orders}   color="var(--sage-dark)" />
-                  <StatBox icon="💰" label="Total Revenue"   value={`$${parseFloat(stats.orderStats?.total_revenue || 0).toFixed(2)}`} color="#27ae60" />
-                  <StatBox icon="📦" label="Total Products"  value={stats.productStats?.total_products} color="#2980b9" />
-                  <StatBox icon="⚠️" label="Out of Stock"    value={stats.productStats?.out_of_stock} color="#e74c3c" />
-                  <StatBox icon="📅" label="Orders Today"    value={stats.orderStats?.today_orders}   color="var(--sage)" />
+                  <StatBox icon={<Users        size={26} strokeWidth={1.6} />} label="Total Users"     value={stats.userStats?.total_users}     color="var(--sage)" />
+                  <StatBox icon={<Store        size={26} strokeWidth={1.6} />} label="Active Sellers"  value={stats.userStats?.sellers}         color="var(--terracotta)" />
+                  <StatBox icon={<Clock        size={26} strokeWidth={1.6} />} label="Pending Sellers" value={stats.userStats?.pending_sellers} color="#e67e22" />
+                  <StatBox icon={<ShoppingBag  size={26} strokeWidth={1.6} />} label="Total Orders"    value={stats.orderStats?.total_orders}   color="var(--sage-dark)" />
+                  <StatBox icon={<DollarSign   size={26} strokeWidth={1.6} />} label="Total Revenue"   value={`$${parseFloat(stats.orderStats?.total_revenue || 0).toFixed(2)}`} color="#27ae60" />
+                  <StatBox icon={<Package      size={26} strokeWidth={1.6} />} label="Total Products"  value={stats.productStats?.total_products} color="#2980b9" />
+                  <StatBox icon={<AlertTriangle size={26} strokeWidth={1.6} />} label="Out of Stock"   value={stats.productStats?.out_of_stock} color="#e74c3c" />
+                  <StatBox icon={<Calendar     size={26} strokeWidth={1.6} />} label="Orders Today"    value={stats.orderStats?.today_orders}   color="var(--sage)" />
                 </div>
 
                 {/* Revenue chart (simple bars) */}
@@ -139,7 +149,7 @@ export default function AdminDashboard() {
                 {/* Pending sellers */}
                 {pendingSellers.length > 0 && (
                   <div className="admin-section">
-                    <h3>⏳ Pending Seller Approvals</h3>
+                    <h3 style={{display:'flex',alignItems:'center',gap:8}}><Clock size={18} strokeWidth={2} /> Pending Seller Approvals</h3>
                     <div className="admin-table">
                       <div className="admin-table__head" style={{gridTemplateColumns:'1fr 1.5fr 1fr 1fr'}}>
                         <span>Name</span><span>Email</span><span>Shop</span><span>Actions</span>
@@ -249,7 +259,10 @@ export default function AdminDashboard() {
                       <span>${parseFloat(p.price).toFixed(2)}</span>
                       <span className={p.stock === 0 ? 'text-danger' : ''}>{p.stock}</span>
                       <span><span className={`badge ${p.is_active ? 'badge-green' : 'badge-gray'}`}>{p.is_active ? 'Active' : 'Off'}</span></span>
-                      <span>⭐ {parseFloat(p.rating).toFixed(1)}</span>
+                       <span style={{display:'inline-flex',alignItems:'center',gap:3}}>
+                         <Star size={12} fill="currentColor" strokeWidth={0} style={{color:'#f59e0b'}} />
+                         {parseFloat(p.rating).toFixed(1)}
+                       </span>
                     </div>
                   ))}
                 </div>

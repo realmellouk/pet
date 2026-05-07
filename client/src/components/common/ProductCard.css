@@ -71,7 +71,7 @@
   justify-content:center;
 }
 .pc:hover .pc__overlay { transform: translateY(0); }
-.pc__cart-btn { width: 100%; justify-content:center; }
+.pc__cart-btn { width: 100%; justify-content:center; display:flex; align-items:center; gap:7px; }
 
 /* Body */
 .pc__body {
@@ -109,7 +109,12 @@
   gap:        4px;
   margin-top: 2px;
 }
-.pc-stars { color: #F5A623; font-size: .88rem; letter-spacing: 1px; }
+.pc-stars {
+  display:    flex;
+  align-items:center;
+  gap:        1px;
+  color:      #F5A623;
+}
 .pc__review-count { font-size: .75rem; color: var(--muted); }
 .pc__price-row {
   display:    flex;

@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams }     from 'react-router-dom';
 import { orderAPI }            from '../api/axios';
+import { Package, Phone, ChevronRight } from 'lucide-react';
 import toast                   from 'react-hot-toast';
 import './Orders.css';
 
@@ -35,7 +36,7 @@ export function OrderList() {
 
         {!orders.length ? (
           <div className="orders-empty">
-            <span>📦</span>
+            <Package size={56} strokeWidth={1.3} style={{ opacity: .25, marginBottom: 12 }} />
             <h3>No orders yet</h3>
             <p>Your order history will appear here</p>
             <Link to="/products" className="btn btn-primary">Start Shopping</Link>
@@ -68,7 +69,7 @@ export function OrderList() {
                     <span className="order-card__label">Total</span>
                     <strong>${parseFloat(o.total_amount).toFixed(2)}</strong>
                   </div>
-                  <div className="order-card__arrow">→</div>
+                  <div className="order-card__arrow"><ChevronRight size={18} strokeWidth={2} /></div>
                 </div>
               </Link>
             ))}
@@ -148,7 +149,7 @@ export function OrderDetail() {
               <p><strong>{order.shipping_name}</strong></p>
               <p>{order.shipping_address}</p>
               <p>{order.shipping_city}{order.shipping_zip ? `, ${order.shipping_zip}` : ''}</p>
-              <p>📞 {order.shipping_phone}</p>
+              <p style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Phone size={14} strokeWidth={2} /> {order.shipping_phone}</p>
             </div>
 
             <h3 className="order-detail-section-title" style={{ marginTop: 24 }}>Payment</h3>
