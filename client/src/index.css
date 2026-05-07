@@ -1,0 +1,246 @@
+/* ============================================================
+   Pet Marketplace — Global Design System
+   Inspired by: warm, natural, pet-loving aesthetic
+   Fonts: Fraunces (display) + DM Sans (body)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+/* ─── CSS Variables ─────────────────────────────────────────── */
+:root {
+  /* Brand palette */
+  --sage:      #4A7C59;
+  --sage-light:#6AAD7A;
+  --sage-dark: #335542;
+  --cream:     #FDF8EE;
+  --cream-dark:#F2EAD3;
+  --terracotta:#D9713A;
+  --terra-lt:  #F09060;
+  --charcoal:  #1E2A1E;
+  --warm-gray: #6B7A6B;
+  --muted:     #A0AEA0;
+  --white:     #FFFFFF;
+
+  /* Semantic */
+  --bg:        var(--cream);
+  --bg-card:   var(--white);
+  --text:      var(--charcoal);
+  --text-muted:var(--warm-gray);
+  --primary:   var(--sage);
+  --primary-hover: var(--sage-dark);
+  --accent:    var(--terracotta);
+  --border:    #D8E4D8;
+
+  /* Spacing */
+  --r-sm:  6px;
+  --r-md:  12px;
+  --r-lg:  20px;
+  --r-xl:  28px;
+  --r-full:999px;
+
+  /* Shadows */
+  --shadow-sm:  0 1px 4px rgba(30,42,30,.07);
+  --shadow-md:  0 4px 16px rgba(30,42,30,.10);
+  --shadow-lg:  0 8px 32px rgba(30,42,30,.13);
+  --shadow-card:0 2px 12px rgba(74,124,89,.08);
+
+  /* Transitions */
+  --ease: cubic-bezier(.25,.46,.45,.94);
+
+  /* Font */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+}
+
+/* ─── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: var(--font-body);
+  background:  var(--bg);
+  color:       var(--text);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; max-width: 100%; }
+
+a { color: inherit; text-decoration: none; }
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+input, textarea, select {
+  font-family: inherit;
+  font-size:   1rem;
+}
+
+h1,h2,h3,h4,h5 {
+  font-family: var(--font-display);
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+/* ─── Utility Classes ────────────────────────────────────────── */
+.container {
+  max-width: 1200px;
+  margin:    0 auto;
+  padding:   0 20px;
+}
+
+.btn {
+  display:         inline-flex;
+  align-items:     center;
+  gap:             8px;
+  padding:         12px 24px;
+  border-radius:   var(--r-full);
+  font-weight:     500;
+  font-size:       .95rem;
+  transition:      all .22s var(--ease);
+  white-space:     nowrap;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color:      var(--white);
+  box-shadow: 0 2px 8px rgba(74,124,89,.3);
+}
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform:  translateY(-1px);
+  box-shadow: 0 4px 16px rgba(74,124,89,.35);
+}
+
+.btn-accent {
+  background: var(--accent);
+  color:      var(--white);
+  box-shadow: 0 2px 8px rgba(217,113,58,.3);
+}
+.btn-accent:hover {
+  background: #c85e28;
+  transform:  translateY(-1px);
+}
+
+.btn-outline {
+  background:  transparent;
+  border:      2px solid var(--primary);
+  color:       var(--primary);
+}
+.btn-outline:hover {
+  background:  var(--primary);
+  color:       var(--white);
+}
+
+.btn-sm { padding: 8px 16px; font-size: .85rem; }
+.btn-lg { padding: 16px 36px; font-size: 1.05rem; }
+
+.badge {
+  display:       inline-block;
+  padding:       3px 10px;
+  border-radius: var(--r-full);
+  font-size:     .75rem;
+  font-weight:   600;
+}
+.badge-green  { background: #E8F5EC; color: var(--sage-dark); }
+.badge-orange { background: #FEF0E6; color: var(--terracotta); }
+.badge-red    { background: #FEECEC; color: #c0392b; }
+.badge-gray   { background: #F0F4F0; color: var(--warm-gray); }
+
+/* ─── Card Base ──────────────────────────────────────────────── */
+.card {
+  background:    var(--bg-card);
+  border-radius: var(--r-lg);
+  box-shadow:    var(--shadow-card);
+  border:        1px solid var(--border);
+  overflow:      hidden;
+}
+
+/* ─── Form Elements ──────────────────────────────────────────── */
+.form-group {
+  display:        flex;
+  flex-direction: column;
+  gap:            6px;
+}
+.form-group label {
+  font-size:   .875rem;
+  font-weight: 500;
+  color:       var(--text);
+}
+.form-control {
+  padding:       11px 16px;
+  border:        1.5px solid var(--border);
+  border-radius: var(--r-md);
+  background:    var(--white);
+  color:         var(--text);
+  transition:    border .18s;
+  outline:       none;
+  width:         100%;
+}
+.form-control:focus {
+  border-color: var(--primary);
+  box-shadow:   0 0 0 3px rgba(74,124,89,.12);
+}
+
+/* ─── Stars ──────────────────────────────────────────────────── */
+.stars { color: #F5A623; letter-spacing: 2px; }
+
+/* ─── Spinner ────────────────────────────────────────────────── */
+.spinner {
+  width: 40px; height: 40px;
+  border: 3px solid var(--cream-dark);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  margin: 60px auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── Page fade-in ───────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp .45s var(--ease) both; }
+
+/* ─── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar        { width: 6px; }
+::-webkit-scrollbar-track  { background: var(--cream-dark); }
+::-webkit-scrollbar-thumb  { background: var(--muted); border-radius: 99px; }
+
+/* ─── Responsive Grid ────────────────────────────────────────── */
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+
+@media (max-width: 1024px) { .grid-4 { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px)  {
+  .grid-4, .grid-3 { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+}
+@media (max-width: 480px)  {
+  .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+}
+
+/* ─── Section Spacing ────────────────────────────────────────── */
+.section { padding: 80px 0; }
+.section-sm { padding: 48px 0; }
+.section-title {
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  margin-bottom: 8px;
+}
+.section-subtitle {
+  color:        var(--text-muted);
+  font-size:    1.05rem;
+  margin-bottom: 40px;
+}
+
+/* ─── Tags ───────────────────────────────────────────────────── */
+.tag {
+  display:       inline-block;
+  padding:       4px 12px;
+  border-radius: var(--r-full);
+  background:    var(--cream-dark);
+  color:         var(--warm-gray);
+  font-size:     .8rem;
+  font-weight:   500;
+}
