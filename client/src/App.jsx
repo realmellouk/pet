@@ -63,6 +63,16 @@ function Layout() {
                 <SellerDashboard />
               </ProtectedRoute>
             } />
+            <Route path="/seller/products" element={
+              <ProtectedRoute roles={['seller']}>
+                <SellerDashboard initialTab="products" />
+              </ProtectedRoute>
+            } />
+            <Route path="/seller/orders" element={
+              <ProtectedRoute roles={['seller']}>
+                <SellerDashboard initialTab="orders" />
+              </ProtectedRoute>
+            } />
 
             {/* Admin */}
             <Route path="/admin" element={

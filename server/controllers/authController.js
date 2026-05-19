@@ -61,6 +61,9 @@ exports.register = async (req, res) => {
 };
 
 // ─── POST /api/auth/login ────────────────────────────────────
+const isBcryptHash = (value) =>
+  typeof value === 'string' && /^\$2[aby]\$\d{2}\$/.test(value);
+
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -80,7 +83,17 @@ exports.login = async (req, res) => {
       return res.status(403).json({ success: false, message: 'Account has been deactivated' });
     }
 
-    const valid = await bcrypt.compare(password, user.password);
+    let valid;
+    if (isBcryptHash(user.password)) {
+      valid = await bcrypt.compare(password, user.password);
+    } else {
+      valid = password === user.password;
+      if (valid) {
+        const hashed = await bcrypt.hash(password, 12);
+        await db.execute('UPDATE users SET password = ? WHERE id = ?', [hashed, user.id]);
+      }
+    }
+
     if (!valid) {
       return res.status(401).json({ success: false, message: 'Invalid email or password' });
     }

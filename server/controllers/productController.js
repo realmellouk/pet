@@ -221,6 +221,20 @@ exports.updateProduct = async (req, res) => {
        brand, pet_type, sku, weight, is_featured, is_active, id]
     );
 
+    if (req.files && req.files.length > 0) {
+      const [countRows] = await db.execute(
+        'SELECT COUNT(*) AS cnt FROM product_images WHERE product_id = ?',
+        [id]
+      );
+      const existingCount = countRows[0].cnt || 0;
+      const imgValues = req.files.map((file, i) =>
+        `(${id}, '/uploads/${file.filename}', ${existingCount === 0 && i === 0 ? 1 : 0}, ${existingCount + i})`
+      ).join(',');
+      await db.execute(
+        `INSERT INTO product_images (product_id, url, is_primary, sort_order) VALUES ${imgValues}`
+      );
+    }
+
     return res.json({ success: true, message: 'Product updated' });
   } catch (err) {
     console.error('updateProduct error:', err);
