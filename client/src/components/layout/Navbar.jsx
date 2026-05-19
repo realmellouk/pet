@@ -61,7 +61,7 @@ export default function Navbar() {
 
         {/* Nav Links */}
         <nav className={`navbar__nav ${menuOpen ? 'navbar__nav--open' : ''}`}>
-          <Link to="/products" className="navbar__link">Shop</Link>
+          <Link to="/" className="navbar__link">Shop</Link>
           <Link to="/products?featured=1" className="navbar__link">Featured</Link>
 
           {!user ? (

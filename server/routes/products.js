@@ -17,7 +17,12 @@ router.post(
   upload.array('images', 6),
   ctrl.createProduct
 );
-router.put ('/:id', authenticate, authorize('seller', 'admin'), ctrl.updateProduct);
+router.put (
+  '/:id',
+  authenticate, authorize('seller', 'admin'),
+  upload.array('images', 6),
+  ctrl.updateProduct
+);
 router.delete('/:id', authenticate, authorize('seller', 'admin'), ctrl.deleteProduct);
 
 // Reviews

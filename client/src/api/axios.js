@@ -46,7 +46,10 @@ export const productAPI = {
   create:      (data)   => api.post('/products', data, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }),
-  update:      (id, data) => api.put(`/products/${id}`, data),
+  update:      (id, data) =>
+    data instanceof FormData
+      ? api.put(`/products/${id}`, data, { headers: { 'Content-Type': 'multipart/form-data' } })
+      : api.put(`/products/${id}`, data),
   delete:      (id)       => api.delete(`/products/${id}`),
   getMyProducts: (params) => api.get('/products/seller/mine', { params }),
   addReview:   (id, data) => api.post(`/products/${id}/reviews`, data),

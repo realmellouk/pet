@@ -40,6 +40,7 @@ export default function ProductCard({ product }) {
   const { user }  = useAuth();
   const { addItem } = useCartStore();
   const [adding, setAdding] = useState(false);
+  const isBuyer = user?.role === 'buyer';
 
   const primaryImage = product.images?.find(i => i.is_primary)?.url
     || product.images?.[0]?.url
@@ -78,14 +79,19 @@ export default function ProductCard({ product }) {
           </span>
         )}
         <div className="pc__overlay">
-          <button
-            className="btn btn-primary btn-sm pc__cart-btn"
-            onClick={handleAddToCart}
-            disabled={adding || product.stock === 0}
-          >
-            <ShoppingCart size={15} strokeWidth={2} />
-            {adding ? 'Adding…' : 'Add to Cart'}
-          </button>
+          {(isBuyer || !user) && (
+            <button
+              className="btn btn-primary btn-sm pc__cart-btn"
+              onClick={handleAddToCart}
+              disabled={adding || product.stock === 0}
+            >
+              <ShoppingCart size={15} strokeWidth={2} />
+              {adding ? 'Adding…' : 'Add to Cart'}
+            </button>
+          )}
+          {product.stock > 0 && user && !isBuyer && (
+            <div className="pc__cart-note">Buyers only</div>
+          )}
         </div>
       </div>
 

@@ -163,23 +163,29 @@ export default function ProductDetail() {
             </div>
 
             {/* Add to cart */}
-            {inStock && (
-              <div className="pd-info__actions">
-                <div className="qty-control">
-                  <button onClick={() => setQty(q => Math.max(1, q-1))}>−</button>
-                  <span>{qty}</span>
-                  <button onClick={() => setQty(q => Math.min(product.stock, q+1))}>+</button>
+            {inStock ? (
+              user?.role === 'buyer' || !user ? (
+                <div className="pd-info__actions">
+                  <div className="qty-control">
+                    <button onClick={() => setQty(q => Math.max(1, q-1))}>−</button>
+                    <span>{qty}</span>
+                    <button onClick={() => setQty(q => Math.min(product.stock, q+1))}>+</button>
+                  </div>
+                  <button
+                    onClick={handleAddToCart}
+                    disabled={adding}
+                    className="btn btn-primary btn-lg pd-info__cart-btn"
+                  >
+                    <ShoppingCart size={18} strokeWidth={2} />
+                    {adding ? 'Adding…' : 'Add to Cart'}
+                  </button>
                 </div>
-                <button
-                  onClick={handleAddToCart}
-                  disabled={adding}
-                  className="btn btn-primary btn-lg pd-info__cart-btn"
-                >
-                  <ShoppingCart size={18} strokeWidth={2} />
-                  {adding ? 'Adding…' : 'Add to Cart'}
-                </button>
-              </div>
-            )}
+              ) : (
+                <div className="pd-info__actions pd-info__note">
+                  <span>Only buyers can add products to cart.</span>
+                </div>
+              )
+            ) : null}
 
             {/* Guarantees */}
             <div className="pd-info__guarantees">

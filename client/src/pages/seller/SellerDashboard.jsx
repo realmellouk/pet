@@ -1,7 +1,7 @@
 /* pages/seller/SellerDashboard.jsx */
 import { useState, useEffect, useRef } from 'react';
 import { createPortal }               from 'react-dom';
-import { Link }                        from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { productAPI, orderAPI }        from '../../api/axios';
 import { useAuth }                     from '../../context/AuthContext';
 import {
@@ -26,9 +26,16 @@ const StatCard = ({ icon, label, value, sub }) => (
 /* ── Add/Edit Product Modal ── */
 function ProductModal({ product, onClose, onSaved, categories }) {
   const [form, setForm] = useState(product ? {
-    name: product.name, description: '', price: product.price,
-    compare_price: '', stock: product.stock, category_id: product.category_id,
-    brand: product.brand || '', pet_type: product.pet_type, sku: '', weight: '',
+    name: product.name,
+    description: product.description || '',
+    price: product.price,
+    compare_price: product.compare_price || '',
+    stock: product.stock,
+    category_id: product.category_id,
+    brand: product.brand || '',
+    pet_type: product.pet_type || 'dog',
+    sku: product.sku || '',
+    weight: product.weight || '',
   } : {
     name: '', description: '', price: '', compare_price: '', stock: 0,
     category_id: '', brand: '', pet_type: 'dog', sku: '', weight: '',
@@ -37,16 +44,27 @@ function ProductModal({ product, onClose, onSaved, categories }) {
   const [saving,  setSaving]  = useState(false);
   const fileRef               = useRef();
 
+  const buildFormData = (values) => {
+    const fd = new FormData();
+    Object.entries(values).forEach(([k, v]) => {
+      if (v !== undefined && v !== null && v !== '') {
+        fd.append(k, v);
+      }
+    });
+    return fd;
+  };
+
   const handleSave = async (e) => {
     e.preventDefault();
     setSaving(true);
     try {
       if (product) {
-        await productAPI.update(product.id, form);
+        const fd = buildFormData(form);
+        files.forEach(f => fd.append('images', f));
+        await productAPI.update(product.id, fd);
         toast.success('Product updated!');
       } else {
-        const fd = new FormData();
-        Object.entries(form).forEach(([k, v]) => v && fd.append(k, v));
+        const fd = buildFormData(form);
         files.forEach(f => fd.append('images', f));
         await productAPI.create(fd);
         toast.success('Product created!');
@@ -136,20 +154,23 @@ function ProductModal({ product, onClose, onSaved, categories }) {
               <input className="form-control"
                 value={form.sku} onChange={e => setForm(f => ({...f, sku: e.target.value}))} />
             </div>
-            {!product && (
-              <div className="form-group modal-grid__full">
-                <label>Product Images</label>
-                <input ref={fileRef} type="file" multiple accept="image/*" className="form-control"
-                  onChange={e => setFiles([...e.target.files])} />
-                {files.length > 0 && (
-                  <div className="file-previews">
-                    {files.map((f, i) => (
-                      <img key={i} src={URL.createObjectURL(f)} alt={f.name} className="file-preview" />
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
+            <div className="form-group modal-grid__full">
+              <label>Product Images</label>
+              <input ref={fileRef} type="file" multiple accept="image/*" className="form-control"
+                onChange={e => setFiles([...e.target.files])} />
+              {product?.image && files.length === 0 && (
+                <div className="file-previews">
+                  <img src={product.image} alt={product.name} className="file-preview" />
+                </div>
+              )}
+              {files.length > 0 && (
+                <div className="file-previews">
+                  {files.map((f, i) => (
+                    <img key={i} src={URL.createObjectURL(f)} alt={f.name} className="file-preview" />
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
           <div className="modal__footer">
             <button type="button" onClick={onClose} className="btn btn-outline">Cancel</button>
@@ -165,15 +186,34 @@ function ProductModal({ product, onClose, onSaved, categories }) {
 }
 
 /* ── Main Seller Dashboard ── */
-export default function SellerDashboard() {
+export default function SellerDashboard({ initialTab = 'overview' }) {
   const { user }                       = useAuth();
-  const [tab,        setTab]           = useState('overview');
+  const location                       = useLocation();
+  const navigate                       = useNavigate();
+  const [tab,        setTab]           = useState(() => {
+    if (location.pathname.endsWith('/products')) return 'products';
+    if (location.pathname.endsWith('/orders'))   return 'orders';
+    return initialTab;
+  });
   const [products,   setProducts]      = useState([]);
   const [orders,     setOrders]        = useState([]);
   const [categories, setCategories]    = useState([]);
   const [loading,    setLoading]       = useState(true);
   const [showModal,  setShowModal]     = useState(false);
   const [editProd,   setEditProd]      = useState(null);
+
+  useEffect(() => {
+    const path = location.pathname.replace(/\/$/, '');
+    if (path.endsWith('/products')) setTab('products');
+    else if (path.endsWith('/orders')) setTab('orders');
+    else setTab(initialTab);
+  }, [location.pathname, initialTab]);
+
+  const tabRoutes = {
+    overview: '/seller',
+    products: '/seller/products',
+    orders:   '/seller/orders',
+  };
 
   const fetchAll = async () => {
     setLoading(true);
@@ -236,7 +276,7 @@ export default function SellerDashboard() {
         <div className="dash-tabs">
           {['overview', 'products', 'orders'].map(t => (
             <button key={t} className={`dash-tab ${tab === t ? 'dash-tab--active' : ''}`}
-              onClick={() => setTab(t)}>
+              onClick={() => navigate(tabRoutes[t])}>
               {{
                 overview: <><BarChart2 size={15} strokeWidth={2} /> Overview</>,
                 products: <><Package    size={15} strokeWidth={2} /> Products</>,
