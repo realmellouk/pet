@@ -52,12 +52,13 @@
   position:  absolute;
   bottom: 8px; left: 8px;
   background: rgba(255,255,255,.85);
-  font-size: 1.1rem;
+  color: var(--sage);
   width:  32px; height: 32px;
   border-radius: 50%;
   display: flex; align-items:center; justify-content:center;
   backdrop-filter: blur(6px);
 }
+.pc__pet-badge svg { width: 16px; height: 16px; stroke-width: 2; }
 
 /* Cart overlay */
 .pc__overlay {

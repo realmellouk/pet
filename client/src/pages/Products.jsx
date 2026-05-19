@@ -5,18 +5,19 @@ import { productAPI }          from '../api/axios';
 import ProductCard             from '../components/common/ProductCard';
 import {
   SlidersHorizontal, Search, X, LayoutGrid, List,
-  ChevronDown, PawPrint, Star, Tag, ArrowUpDown
+  ChevronDown, PawPrint, ArrowUpDown,
+  Dog, Cat, Bird, Fish, Rabbit, Turtle
 } from 'lucide-react';
 import './Products.css';
 
 const PET_TYPES = [
-  { key: 'dog',     label: 'Dogs',     emoji: '🐕' },
-  { key: 'cat',     label: 'Cats',     emoji: '🐈' },
-  { key: 'bird',    label: 'Birds',    emoji: '🦜' },
-  { key: 'fish',    label: 'Fish',     emoji: '🐠' },
-  { key: 'rabbit',  label: 'Rabbits',  emoji: '🐇' },
-  { key: 'reptile', label: 'Reptiles', emoji: '🦎' },
-  { key: 'other',   label: 'Other',    emoji: '🐾' },
+  { key: 'dog',     label: 'Dogs',     Icon: Dog },
+  { key: 'cat',     label: 'Cats',     Icon: Cat },
+  { key: 'bird',    label: 'Birds',    Icon: Bird },
+  { key: 'fish',    label: 'Fish',     Icon: Fish },
+  { key: 'rabbit',  label: 'Rabbits',  Icon: Rabbit },
+  { key: 'reptile', label: 'Reptiles', Icon: Turtle },
+  { key: 'other',   label: 'Other',    Icon: PawPrint },
 ];
 
 const SORT_OPTIONS = [
@@ -148,7 +149,7 @@ export default function Products() {
               {filters.search
                 ? <>Results for "<em>{filters.search}</em>"</>
                 : filters.pet_type
-                  ? <>{PET_TYPES.find(p => p.key === filters.pet_type)?.emoji} {PET_TYPES.find(p => p.key === filters.pet_type)?.label} Products</>
+                  ? <>{PET_TYPES.find(p => p.key === filters.pet_type)?.label} Products</>
                   : filters.featured
                     ? <>⭐ Featured Products</>
                     : <>All Products</>
@@ -216,13 +217,13 @@ export default function Products() {
             {/* Pet type */}
             <FilterSection title="Pet Type">
               <div className="pet-type-pills">
-                {PET_TYPES.map(pt => (
+                {PET_TYPES.map(({ Icon, ...pt }) => (
                   <button
                     key={pt.key}
                     className={`pet-pill ${filters.pet_type === pt.key ? 'pet-pill--active' : ''}`}
                     onClick={() => updateFilter('pet_type', filters.pet_type === pt.key ? '' : pt.key)}
                   >
-                    <span>{pt.emoji}</span>
+                    <Icon className="pet-pill__icon" size={18} strokeWidth={2} aria-hidden="true" />
                     {pt.label}
                   </button>
                 ))}

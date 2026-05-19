@@ -1,6 +1,6 @@
 /* components/layout/Navbar.jsx */
 import { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useCartStore } from '../../store/cartStore';
 import {
@@ -61,8 +61,18 @@ export default function Navbar() {
 
         {/* Nav Links */}
         <nav className={`navbar__nav ${menuOpen ? 'navbar__nav--open' : ''}`}>
-          <Link to="/products" className="navbar__link">Shop</Link>
-          <Link to="/products?featured=1" className="navbar__link">Featured</Link>
+          <NavLink
+            to="/products"
+            className={({ isActive }) => `navbar__link ${isActive && !location.search ? 'navbar__link--active' : ''}`}
+          >
+            Shop
+          </NavLink>
+          <Link
+            to="/products?featured=1"
+            className={`navbar__link ${location.pathname === '/products' && location.search.includes('featured=1') ? 'navbar__link--active' : ''}`}
+          >
+            Featured
+          </Link>
 
           {!user ? (
             <>
@@ -120,7 +130,13 @@ export default function Navbar() {
         </nav>
 
         {/* Hamburger */}
-        <button className="navbar__hamburger" onClick={() => setMenuOpen(!menuOpen)}>
+        <button
+          type="button"
+          className="navbar__hamburger"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-expanded={menuOpen}
+        >
           {menuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>

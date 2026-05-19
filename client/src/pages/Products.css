@@ -186,8 +186,10 @@
 .pet-pill {
   display:       flex;
   align-items:   center;
+  justify-content: center;
   gap:           5px;
-  padding:       5px 11px;
+  min-height:    32px;
+  padding:       6px 12px;
   border-radius: var(--r-full);
   border:        1.5px solid var(--border);
   background:    var(--white);
@@ -195,14 +197,30 @@
   font-weight:   500;
   color:         var(--warm-gray);
   cursor:        pointer;
-  transition:    all .18s;
+  line-height:   1;
+  white-space:   nowrap;
+  transition:    border-color .18s var(--ease), color .18s var(--ease), background .18s var(--ease), box-shadow .18s var(--ease);
 }
-.pet-pill:hover { border-color: var(--sage-light); color: var(--sage-dark); }
+.pet-pill:hover {
+  border-color: var(--sage-light);
+  color: var(--sage-dark);
+  box-shadow: 0 2px 8px rgba(74,124,89,.08);
+}
 .pet-pill--active {
   border-color: var(--primary);
   background:   var(--primary);
   color:        white;
 }
+.pet-pill__icon {
+  width: 18px;
+  height: 18px;
+  color: var(--primary);
+  flex-shrink: 0;
+  stroke-width: 2;
+  transition: color .18s var(--ease);
+}
+.pet-pill:hover .pet-pill__icon { color: var(--sage-dark); }
+.pet-pill--active .pet-pill__icon { color: currentColor; }
 
 /* Price inputs */
 .price-inputs {

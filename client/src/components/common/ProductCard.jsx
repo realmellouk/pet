@@ -3,7 +3,9 @@ import { useState } from 'react';
 import { Link }     from 'react-router-dom';
 import { useAuth }  from '../../context/AuthContext';
 import { useCartStore } from '../../store/cartStore';
-import { ShoppingCart } from 'lucide-react';
+import {
+  ShoppingCart, Dog, Cat, Bird, Fish, Rabbit, Turtle, PawPrint
+} from 'lucide-react';
 import toast from 'react-hot-toast';
 import './ProductCard.css';
 
@@ -36,6 +38,16 @@ const StarRating = ({ rating }) => {
   );
 };
 
+const PET_TYPE_ICONS = {
+  dog: Dog,
+  cat: Cat,
+  bird: Bird,
+  fish: Fish,
+  rabbit: Rabbit,
+  reptile: Turtle,
+  other: PawPrint,
+};
+
 export default function ProductCard({ product }) {
   const { user }  = useAuth();
   const { addItem } = useCartStore();
@@ -49,6 +61,7 @@ export default function ProductCard({ product }) {
   const discount = product.compare_price
     ? Math.round((1 - product.price / product.compare_price) * 100)
     : null;
+  const PetTypeIcon = PET_TYPE_ICONS[product.pet_type] || PawPrint;
 
   const handleAddToCart = async (e) => {
     e.preventDefault();
@@ -57,7 +70,7 @@ export default function ProductCard({ product }) {
     try {
       setAdding(true);
       await addItem(product.id);
-      toast.success('Added to cart! 🐾');
+      toast.success('Added to cart!');
     } catch {
       toast.error('Failed to add to cart');
     } finally {
@@ -74,7 +87,7 @@ export default function ProductCard({ product }) {
         {product.stock === 0 && <span className="pc__out">Out of Stock</span>}
         {product.pet_type && (
           <span className="pc__pet-badge">
-            {{ dog:'🐕', cat:'🐈', bird:'🦜', fish:'🐠', rabbit:'🐇', reptile:'🦎' }[product.pet_type] || '🐾'}
+            <PetTypeIcon size={16} strokeWidth={2} aria-hidden="true" />
           </span>
         )}
         <div className="pc__overlay">
